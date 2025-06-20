@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>SDGs-減少國內及國家間的不平等</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-image: url('images/background.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 30px;
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      background-color: rgba(0,0,0,0.6);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    #intro {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      margin: 20px;
+      border-radius: 12px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 18px;
+      line-height: 1.6;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    #game {
+      display: flex;
+      justify-content: space-around;
+      padding: 40px 20px;
+    }
+    .household {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .household > img {
+      width: 200px;
+      height: auto;
+      border-radius: 8px;
+    }
+    #resources {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    .resource {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      cursor: grab;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      background-color: white;
+      padding: 5px;
+    }
+    .dropzone {
+      min-height: 120px;
+      padding: 10px;
+      border: 2px dashed #aaa;
+      margin-top: 15px;
+      background-color: rgba(240, 240, 240, 0.8);
+      border-radius: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+    .dropzone img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 8px;
+      background-color: white;
+      padding: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #nextLevel {
+      text-align: center;
+      display: none;
+      padding: 20px;
+    }
+    #nextLevel button {
+      font-size: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgm" loop>
+    <source src="images/background.mp3" type="audio/mpeg">
+  </audio>
+
+  <header>
+    <div>SDGs-減少國內及國家間的不平</div>
+    <div>分數: <span id="score">0</span></div>
+  </header>
+
+  <div id="intro">
+    歡迎來到「SDGs-減少國內及國家間的不平」遊戲！<br>
+    在這款遊戲中，你將模擬政府如何分配水、電與教育經費給不同收入家庭。<br>
+    每個資源都有三份，請將它們平均分配給貧窮戶、中等戶與富裕戶，確保公平，才能順利進入下一關！
+  </div>
+
+  <div id="game">
+    <div class="household" data-id="poor">
+      <img src="images/poor.jpg" alt="貧窮戶">
+      <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+    <div class="household" data-id="middle">
+      <img src="images/middle.jpg" alt="中等戶">
+      <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+    <div class="household" data-id="rich">
+      <img src="images/rich.jpg" alt="富裕戶">
+      <div class="dropzone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+  </div>
+
+  <div id="resources">
+    <img src="images/water.jpg" alt="水" class="resource" draggable="true" ondragstart="drag(event)" id="water1">
+    <img src="images/water.jpg" alt="水" class="resource" draggable="true" ondragstart="drag(event)" id="water2">
+    <img src="images/water.jpg" alt="水" class="resource" draggable="true" ondragstart="drag(event)" id="water3">
+
+    <img src="images/electricity.jpg" alt="電" class="resource" draggable="true" ondragstart="drag(event)" id="electric1">
+    <img src="images/electricity.jpg" alt="電" class="resource" draggable="true" ondragstart="drag(event)" id="electric2">
+    <img src="images/electricity.jpg" alt="電" class="resource" draggable="true" ondragstart="drag(event)" id="electric3">
+
+    <img src="images/education.jpg" alt="教育經費" class="resource" draggable="true" ondragstart="drag(event)" id="edu1">
+    <img src="images/education.jpg" alt="教育經費" class="resource" draggable="true" ondragstart="drag(event)" id="edu2">
+    <img src="images/education.jpg" alt="教育經費" class="resource" draggable="true" ondragstart="drag(event)" id="edu3">
+  </div>
+
+  <div id="nextLevel">
+    <p>資源分配成功！你已完成本關，點擊下方按鈕進入下一關。</p>
+    <button onclick="goToNextLevel()">前往下一關</button>
+  </div>
+
+  <script>
+    let bgmStarted = false;
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.id);
+
+      if (!bgmStarted) {
+        const bgm = document.getElementById("bgm");
+        bgm.play().catch(err => {
+          console.log("音樂播放失敗：", err);
+        });
+        bgmStarted = true;
+      }
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      var resource = document.getElementById(data);
+      if (ev.target.classList.contains("dropzone")) {
+        ev.target.appendChild(resource);
+        checkSuccess();
+      }
+    }
+
+    function checkSuccess() {
+      const zones = document.querySelectorAll('.dropzone');
+      const counts = [];
+      zones.forEach(zone => {
+        let water = 0, electric = 0, education = 0;
+        zone.querySelectorAll('img').forEach(img => {
+          if (img.src.includes('water')) water++;
+          if (img.src.includes('electricity')) electric++;
+          if (img.src.includes('education')) education++;
+        });
+        counts.push([water, electric, education]);
+      });
+      if (counts.every(c => c[0] === 1 && c[1] === 1 && c[2] === 1)) {
+        setTimeout(() => {
+          alert("資源分配平等！進入下一關");
+          document.getElementById("score").textContent = parseInt(document.getElementById("score").textContent) + 10;
+          document.getElementById("nextLevel").style.display = "block";
+        }, 100);
+      } else if (counts.some(c => c[0] + c[1] + c[2] > 3)) {
+        setTimeout(() => {
+          alert("某些家庭資源過多，引起抗議！請重新分配。");
+        }, 100);
+      }
+    }
+
+    function goToNextLevel() {
+      const score = document.getElementById("score").textContent;
+      localStorage.setItem("score", score);
+      window.location.href = "level2.html";
+    }
+
+    // 初始化分數
+    window.addEventListener("load", () => {
+      const storedScore = localStorage.getItem("score") || "0";
+      document.getElementById("score").textContent = storedScore;
+    });
+  </script>
+</body>
+</html>
